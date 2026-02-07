@@ -143,4 +143,34 @@
         <p>SELECT A PRINT</p>
 
         <div class="prints">
-          <img src="./print1.png" onclick="appl
+          <img src="./print1.png" onclick="applyPrint('./print1.png')" />
+          <img src="./print2.png" onclick="applyPrint('./print2.png')" />
+          <img src="./print3.png" onclick="applyPrint('./print3.png')" />
+          <img src="./print4.png" onclick="applyPrint('./print4.png')" />
+          <img src="./print5.png" onclick="applyPrint('./print5.png')" />
+        </div>
+
+        <button class="ai-btn" onclick="generateAIPrint()">
+          GENERATE AI PRINT (COMING SOON)
+        </button>
+
+        <a class="back" href="/">← BACK TO HOME</a>
+      </div>
+    </div>
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+      function applyPrint(src) {
+        const overlay = document.getElementById("printOverlay");
+        overlay.src = src;
+        overlay.style.opacity = "0.85";
+      }
+
+      function generateAIPrint() {
+        alert(
+          "AI print generation will be enabled in the next phase using AI models."
+        );
+      }
+    </script>
+  </body>
+</html>
