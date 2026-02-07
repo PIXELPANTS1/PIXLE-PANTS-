@@ -1,0 +1,7 @@
+{
+  "name": "pixel-pants",
+  "private": true,
+  "scripts": {
+    "build": "echo build complete"
+  }
+}
