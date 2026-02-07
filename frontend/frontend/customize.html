@@ -3,128 +3,144 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Customize – PIXEL PANTS</title>
+    <title>Customization Studio – PIXEL PANTS</title>
 
     <style>
-      <style>
-  body {
-    margin: 0;
-    font-family: Helvetica, Arial, sans-serif;
-    background: #f5f5f3;
-    color: #0b0b0b;
-  }
+      /* ===== RESET ===== */
+      * {
+        box-sizing: border-box;
+      }
 
-  .studio {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    min-height: 100vh;
-    padding: 40px;
-    gap: 40px;
-  }
+      body {
+        margin: 0;
+        font-family: Helvetica, Arial, sans-serif;
+        background: #f5f5f3;
+        color: #0b0b0b;
+      }
 
-  .preview {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #eaeaea;
-    position: relative;
-  }
+      /* ===== LAYOUT ===== */
+      .studio {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        min-height: 100vh;
+        padding: 40px;
+        gap: 40px;
+      }
 
-  .preview img {
-    max-height: 80vh;
-  }
+      /* ===== PREVIEW AREA ===== */
+      .preview {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eaeaea;
+      }
 
-  .panel {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+      .preview img {
+        max-height: 80vh;
+        user-select: none;
+      }
 
-  h1 {
-    letter-spacing: 4px;
-    margin-bottom: 10px;
-  }
+      #printOverlay {
+        position: absolute;
+        bottom: 0;
+        left: 55%;
+        transform: translateX(-50%);
+        height: 40%;
+        opacity: 0.85;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+      }
 
-  p {
-    letter-spacing: 2px;
-    font-size: 12px;
-    margin-bottom: 30px;
-  }
-<button onclick="generateAIPrint()" style="margin-top:30px;padding:12px;">
-  GENERATE AI PRINT (COMING SOON)
-</button>
-  .prints {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-  }
+      /* ===== SIDE PANEL ===== */
+      .panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
 
-  .prints img {
-    width: 100%;
-    cursor: pointer;
-    border: 1px solid transparent;
-  }
+      h1 {
+        letter-spacing: 4px;
+        margin-bottom: 10px;
+      }
 
-  .prints img:hover {
-    border-color: #0b0b0b;
-  }
-</style>
+      p {
+        letter-spacing: 2px;
+        font-size: 12px;
+        margin-bottom: 30px;
+      }
 
+      /* ===== PRINT SELECTOR ===== */
+      .prints {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+      }
+
+      .prints img {
+        width: 100%;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: border 0.2s ease;
+      }
+
+      .prints img:hover {
+        border-color: #0b0b0b;
+      }
+
+      /* ===== BUTTONS ===== */
+      .back {
+        margin-top: 40px;
+        font-size: 12px;
+        letter-spacing: 3px;
+        text-decoration: none;
+        color: #0b0b0b;
+      }
+
+      .ai-btn {
+        margin-top: 30px;
+        padding: 12px;
+        background: transparent;
+        border: 1px solid #0b0b0b;
+        letter-spacing: 2px;
+        cursor: pointer;
+      }
+
+      /* ===== MOBILE ===== */
+      @media (max-width: 900px) {
+        .studio {
+          grid-template-columns: 1fr;
+          padding: 20px;
+        }
+
+        .panel {
+          order: -1;
+        }
+
+        .preview img {
+          max-height: 60vh;
+        }
+
+        #printOverlay {
+          height: 45%;
+        }
+      }
     </style>
   </head>
 
   <body>
     <div class="studio">
+      <!-- PREVIEW -->
+      <div class="preview">
+        <img id="denimBase" src="./denim.png" alt="Denim Base" />
+        <img id="printOverlay" alt="Print Overlay" />
+      </div>
 
-  <div class="preview">
-    <img id="denimBase" src="./denim.png" />
-    <img id="printOverlay" />
-  </div>
+      <!-- CONTROL PANEL -->
+      <div class="panel">
+        <h1>CUSTOMIZATION STUDIO</h1>
+        <p>SELECT A PRINT</p>
 
-  <div class="panel">
-    <h1>CUSTOMIZATION STUDIO</h1>
-    <p>SELECT A PRINT</p>
-
-    <div class="prints">
-      <img src="./print1.png" onclick="applyPrint('./print1.png')" />
-      <img src="./print2.png" onclick="applyPrint('./print2.png')" />
-      <img src="./print3.png" onclick="applyPrint('./print3.png')" />
-      <img src="./print4.png" onclick="applyPrint('./print4.png')" />
-      <img src="./print5.png" onclick="applyPrint('./print5.png')" />
-    </div>
-
-    <br /><br />
-    <a href="/" style="letter-spacing:3px;font-size:12px;">← BACK</a>
-  </div>
-
-</div>
-<script>
-  function applyPrint(src) {
-    const print = document.getElementById("printOverlay");
-
-    print.src = src;
-    print.style.position = "absolute";
-
-    /* POSITIONING — TUNE THIS TO MATCH VIDEO */
-    print.style.bottom = "0";
-    print.style.left = "55%"; // outer side
-    print.style.transform = "translateX(-50%)";
-
-    /* SIZE — knee to bottom */
-    print.style.height = "40%";
-    print.style.width = "auto";
-
-    /* REALISM */
-    print.style.opacity = "0.85";
-    print.style.mixBlendMode = "multiply";
-    print.style.pointerEvents = "none";
-  }
-</script>
-<script>
-  function generateAIPrint() {
-    alert("AI print generation will be added in Phase 2");
-  }
-</script>
-
-  </body>
-</html>
+        <div class="prints">
+          <img src="./print1.png" onclick="appl
