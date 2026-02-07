@@ -1,176 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Customization Studio – PIXEL PANTS</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customization Studio – PIXEL PANTS</title>
 
-    <style>
-      /* ===== RESET ===== */
-      * {
-        box-sizing: border-box;
-      }
+  <style>
+    body {
+      margin: 0;
+      font-family: Helvetica, Arial, sans-serif;
+      background: #f5f5f3;
+      color: #0b0b0b;
+    }
 
-      body {
-        margin: 0;
-        font-family: Helvetica, Arial, sans-serif;
-        background: #f5f5f3;
-        color: #0b0b0b;
-      }
+    .studio {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      min-height: 100vh;
+      padding: 40px;
+      gap: 40px;
+    }
 
-      /* ===== LAYOUT ===== */
+    .preview {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #eaeaea;
+    }
+
+    canvas {
+      max-height: 80vh;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    h1 {
+      letter-spacing: 4px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      letter-spacing: 2px;
+      font-size: 12px;
+      margin-bottom: 30px;
+    }
+
+    .prints {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .prints img {
+      width: 100%;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .prints img:hover {
+      border-color: #0b0b0b;
+    }
+
+    .toggle {
+      margin-bottom: 20px;
+      font-size: 12px;
+      letter-spacing: 3px;
+      cursor: pointer;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 12px;
+      background: transparent;
+      border: 1px solid #0b0b0b;
+      letter-spacing: 2px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
       .studio {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        min-height: 100vh;
-        padding: 40px;
-        gap: 40px;
+        grid-template-columns: 1fr;
+        padding: 20px;
       }
-
-      /* ===== PREVIEW AREA ===== */
-      .preview {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #eaeaea;
-      }
-
-      .preview img {
-        max-height: 80vh;
-        user-select: none;
-      }
-
-      #printOverlay {
-        position: absolute;
-        bottom: 0;
-        left: 55%;
-        transform: translateX(-50%);
-        height: 40%;
-        opacity: 0.85;
-        mix-blend-mode: multiply;
-        pointer-events: none;
-        transition: opacity 0.4s ease;
-      }
-
-      /* ===== SIDE PANEL ===== */
       .panel {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        order: -1;
       }
+    }
+  </style>
+</head>
 
-      h1 {
-        letter-spacing: 4px;
-        margin-bottom: 10px;
-      }
+<body>
 
-      p {
-        letter-spacing: 2px;
-        font-size: 12px;
-        margin-bottom: 30px;
-      }
+<div class="studio">
 
-      /* ===== PRINT SELECTOR ===== */
-      .prints {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
-      }
+  <!-- PREVIEW -->
+  <div class="preview">
+    <canvas id="denimCanvas"></canvas>
+  </div>
 
-      .prints img {
-        width: 100%;
-        cursor: pointer;
-        border: 1px solid transparent;
-        transition: border 0.2s ease;
-      }
+  <!-- PANEL -->
+  <div class="panel">
+    <div class="toggle" onclick="toggleView()">TOGGLE FRONT / BACK</div>
 
-      .prints img:hover {
-        border-color: #0b0b0b;
-      }
+    <h1>CUSTOMIZATION STUDIO</h1>
+    <p>SELECT A PRINT</p>
 
-      /* ===== BUTTONS ===== */
-      .back {
-        margin-top: 40px;
-        font-size: 12px;
-        letter-spacing: 3px;
-        text-decoration: none;
-        color: #0b0b0b;
-      }
-
-      .ai-btn {
-        margin-top: 30px;
-        padding: 12px;
-        background: transparent;
-        border: 1px solid #0b0b0b;
-        letter-spacing: 2px;
-        cursor: pointer;
-      }
-
-      /* ===== MOBILE ===== */
-      @media (max-width: 900px) {
-        .studio {
-          grid-template-columns: 1fr;
-          padding: 20px;
-        }
-
-        .panel {
-          order: -1;
-        }
-
-        .preview img {
-          max-height: 60vh;
-        }
-
-        #printOverlay {
-          height: 45%;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="studio">
-      <!-- PREVIEW -->
-      <div class="preview">
-        <img id="denimBase" src="./denim.png" alt="Denim Base" />
-        <img id="printOverlay" alt="Print Overlay" />
-      </div>
-
-      <!-- CONTROL PANEL -->
-      <div class="panel">
-        <h1>CUSTOMIZATION STUDIO</h1>
-        <p>SELECT A PRINT</p>
-
-        <div class="prints">
-          <img src="./print1.png" onclick="applyPrint('./print1.png')" />
-          <img src="./print2.png" onclick="applyPrint('./print2.png')" />
-          <img src="./print3.png" onclick="applyPrint('./print3.png')" />
-          <img src="./print4.png" onclick="applyPrint('./print4.png')" />
-          <img src="./print5.png" onclick="applyPrint('./print5.png')" />
-        </div>
-
-        <button class="ai-btn" onclick="generateAIPrint()">
-          GENERATE AI PRINT (COMING SOON)
-        </button>
-
-        <a class="back" href="/">← BACK TO HOME</a>
-      </div>
+    <div class="prints">
+      <img src="./print1.png" onclick="applyPrint('./print1.png')" />
+      <img src="./print2.png" onclick="applyPrint('./print2.png')" />
+      <img src="./print3.png" onclick="applyPrint('./print3.png')" />
+      <img src="./print4.png" onclick="applyPrint('./print4.png')" />
+      <img src="./print5.png" onclick="applyPrint('./print5.png')" />
     </div>
 
-    <!-- ===== SCRIPT ===== -->
-    <script>
-      function applyPrint(src) {
-        const overlay = document.getElementById("printOverlay");
-        overlay.src = src;
-        overlay.style.opacity = "0.85";
-      }
+    <button onclick="generateAIPrint()">GENERATE AI PRINT (COMING SOON)</button>
+  </div>
 
-      function generateAIPrint() {
-        alert(
-          "AI print generation will be enabled in the next phase using AI models."
-        );
-      }
-    </script>
-  </body>
+</div>
+
+<script>
+  const canvas = document.getElementById("denimCanvas");
+  const ctx = canvas.getContext("2d");
+
+  let view = "front";
+  let printSrc = null;
+
+  const denimFront = new Image();
+  denimFront.src = "./denim.png";
+
+  const denimBack = new Image();
+  denimBack.src = "./denim.png"; // replace later with back image
+
+  const printImg = new Image();
+
+  function resizeCanvas(img) {
+    canvas.width = img.width;
+    canvas.height = img.height;
+  }
+
+  function draw() {
+    const denim = view === "front" ? denimFront : denimBack;
+
+    resizeCanvas(denim);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Base denim
+    ctx.drawImage(denim, 0, 0);
+
+    if (printSrc) {
+      ctx.save();
+
+      // FABRIC BLEND
+      ctx.globalAlpha = 0.85;
+      ctx.globalCompositeOperation = "multiply";
+
+      // LEFT LEG (curved taper)
+      ctx.drawImage(
+        printImg,
+        canvas.width * 0.38,
+        canvas.height * 0.58,
+        canvas.width * 0.12,
+        canvas.height * 0.40
+      );
+
+      // RIGHT LEG
+      ctx.drawImage(
+        printImg,
+        canvas.width * 0.52,
+        canvas.height * 0.58,
+        canvas.width * 0.12,
+        canvas.height * 0.40
+      );
+
+      ctx.restore();
+    }
+  }
+
+  denimFront.onload = draw;
+
+  function applyPrint(src) {
+    printSrc = src;
+    printImg.src = src;
+
+    // subtle motion effect
+    let offset = 0;
+    const animate = () => {
+      offset = Math.sin(Date.now() / 300) * 2;
+      ctx.translate(0, offset);
+      draw();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      requestAnimationFrame(animate);
+    };
+
+    printImg.onload = animate;
+  }
+
+  function toggleView() {
+    view = view === "front" ? "back" : "front";
+    draw();
+  }
+
+  function generateAIPrint() {
+    alert(
+      "Next phase: AI will generate a seamless denim print and apply it here."
+    );
+  }
+</script>
+
+</body>
 </html>
