@@ -1,0 +1,6 @@
+{
+  "routes": [
+    { "src": "/customize", "dest": "/frontend/customize.html" },
+    { "src": "/(.*)", "dest": "/frontend/index.html" }
+  ]
+}
